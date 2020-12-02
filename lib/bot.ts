@@ -54,7 +54,7 @@ class SlackBot {
         file: i.id
       });
     }))
-    return lastElement || null;
+    return lastElement.length ? lastElement[0] : null;
   }
 
   async fileContents(file: IFile) {

@@ -32,6 +32,7 @@ export const alertChannel = async (options: Config) => {
     const localEnv = parseEnv(envFile);
     const latestFileFromBot = await bot.latestFile(channel, envFile);
     console.log("latestFileFromBot", latestFileFromBot)
+    console.log("latestFileFromBot && latestFileFromBot.url_private", latestFileFromBot && latestFileFromBot.url_private)
     if (latestFileFromBot && latestFileFromBot.url_private) {
       spinner.text = 'comparing envs';
       const fileContents = await bot.fileContents(latestFileFromBot);

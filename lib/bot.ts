@@ -44,11 +44,10 @@ class SlackBot {
       token: this.userToken
     });
     console.log("filename", filename)
-    console.log("indexOfFileName", indexOfFileName)
     const listWithMatchingFileName = files.length && files.filter(i => i.name === filename)
     const lastElement = listWithMatchingFileName.length && listWithMatchingFileName.splice(listWithMatchingFileName.length - 1, 1)
     console.log("lastElement", lastElement)
-    return indexOfFileName ? files[indexOfFileName] : null;
+    return lastElement || null;
   }
 
   async fileContents(file: IFile) {

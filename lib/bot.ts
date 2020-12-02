@@ -35,6 +35,13 @@ class SlackBot {
     return channels.filter(channel => channel.name === channelName)[0];
   }
 
+  async deleteFile(fileId: string) {
+    return await this.web.files.delete({
+      token: this.userToken,
+      file: fileId
+    });
+  }
+
   async latestFile(channel: Channel, filename: string): Promise<IFile | null> {
     const { user_id: SLACK_BOT_ID } = await this.web.auth.test();
     const { files } = await this.web.files.list({
@@ -49,10 +56,7 @@ class SlackBot {
     const lastElement = listWithMatchingFileName.length && listWithMatchingFileName.splice(listWithMatchingFileName.length - 1, 1)
     console.log("lastElement", lastElement)
     await Promise.all(listWithMatchingFileName.map(async (i) => {
-      return await this.web.files.delete({
-        token: this.userToken,
-        file: i.id
-      });
+      return deleteFile(i.id)
     }))
     return lastElement.length ? lastElement[0] : null;
   }

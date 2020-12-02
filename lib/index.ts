@@ -35,15 +35,22 @@ export const alertChannel = async (options: Config) => {
     if (latestFileFromBot && latestFileFromBot.url_private) {
       spinner.text = 'comparing envs';
       const fileContents = await bot.fileContents(latestFileFromBot);
+      console.log("fileContents", fileContents)
       const slackEnv = parseEnv(tempWrite.sync(fileContents));
+      console.log("slackEnv", slackEnv)
       const variables = keys(localEnv).every(key =>
         slackEnv.hasOwnProperty(key)
       );
+      console.log("variables", variables)
       const keysInSync =
         variables && keys(localEnv).length === keys(slackEnv).length;
+      console.log("keysInSync", keysInSync)
 
       const valuesInSync = valuesSyncCheck(localEnv, slackEnv, patterns);
+      console.log("valuesInSync", valuesInSync)
       const inSync = keysInSync && valuesInSync;
+
+      console.log("inSync", inSync)
 
       if (!inSync) {
         spinner.text = 'env not in sync';

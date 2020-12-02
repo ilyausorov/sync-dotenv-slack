@@ -43,7 +43,11 @@ class SlackBot {
       count: 100,
       token: this.userToken
     });
-    const indexOfFileName = files.length && files.findIndex(i => i.name === filename)
+    console.log("filename", filename)
+    console.log("indexOfFileName", indexOfFileName)
+    const listWithMatchingFileName = files.length && files.filter(i => i.name === filename)
+    const lastElement = listWithMatchingFileName.length && listWithMatchingFileName.splice(listWithMatchingFileName.length - 1, 1)
+    console.log("lastElement", lastElement)
     return indexOfFileName ? files[indexOfFileName] : null;
   }
 

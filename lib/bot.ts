@@ -45,6 +45,7 @@ class SlackBot {
     });
     console.log("filename", filename)
     const listWithMatchingFileName = files.length && files.filter(i => i.name === filename)
+    console.log("listWithMatchingFileName", listWithMatchingFileName.length)
     const lastElement = listWithMatchingFileName.length && listWithMatchingFileName.splice(listWithMatchingFileName.length - 1, 1)
     console.log("lastElement", lastElement)
     return lastElement || null;

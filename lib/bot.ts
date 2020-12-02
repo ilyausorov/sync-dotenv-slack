@@ -55,11 +55,11 @@ class SlackBot {
     return data;
   }
 
-  async upload(env: string, channel: Channel) {
+  async upload(env: string, channel: Channel, filename: string) {
     return tempWrite(env).then(filePath => {
       const file = readFileSync(filePath);
       return this.web.files.upload({
-        filename: Date.now().toString(),
+        filename: filename,
         file,
         channels: channel.name
       });

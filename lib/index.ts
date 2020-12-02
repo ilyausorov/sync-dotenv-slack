@@ -28,7 +28,7 @@ export const alertChannel = async (options: Config) => {
 
     spinner.text = `found ${channelName} channel`;
 
-    const envFile = process.env.ENV_FILE || undefined
+    const envFile = process.env.ENV_FILE || '.env'
     console.log("envFile", envFile)
     const localEnv = parseEnv(envFile);
     const latestFileFromBot = await bot.latestFile(channel);
@@ -49,12 +49,12 @@ export const alertChannel = async (options: Config) => {
       if (!inSync) {
         spinner.text = 'env not in sync';
         spinner.text = 'synchronizing env with slack channel';
-        await bot.upload(getEnvContents(localEnv, patterns), channel);
+        await bot.upload(getEnvContents(localEnv, patterns), channel, envFile);
         spinner.succeed('sync successful 🎉');
       } else spinner.info('env in sync');
     } else {
       spinner.text = 'synchronizing env with slack channel';
-      await bot.upload(getEnvContents(localEnv, patterns), channel);
+      await bot.upload(getEnvContents(localEnv, patterns), channel, envFile);
       spinner.succeed('sync successful 🎉');
     }
     exit(0, spinner);

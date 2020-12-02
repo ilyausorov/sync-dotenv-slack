@@ -49,7 +49,7 @@ class SlackBot {
     const lastElement = listWithMatchingFileName.length && listWithMatchingFileName.splice(listWithMatchingFileName.length - 1, 1)
     console.log("lastElement", lastElement)
     await Promise.all(listWithMatchingFileName.map(async (i) => {
-      return await this.web.files.list({
+      return await this.web.files.delete({
         token: this.userToken,
         file: i.id
       });

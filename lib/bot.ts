@@ -35,15 +35,17 @@ class SlackBot {
     return channels.filter(channel => channel.name === channelName)[0];
   }
 
-  async latestFile(channel: Channel): Promise<IFile | null> {
+  async latestFile(channel: Channel, filename: string): Promise<IFile | null> {
     const { user_id: SLACK_BOT_ID } = await this.web.auth.test();
     const { files } = await this.web.files.list({
       channel: channel.id,
       user: `${SLACK_BOT_ID}`,
-      count: 1,
+      count: 100,
       token: this.userToken
     });
-    return files[0] || null;
+    console.log(files)
+    const indexOfFileName = files.length && files.findIndex(i => i.name === filename)
+    return indexOfFileName ? files[indexOfFileName] : null;
   }
 
   async fileContents(file: IFile) {

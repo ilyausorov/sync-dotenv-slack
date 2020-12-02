@@ -27,7 +27,10 @@ export const alertChannel = async (options: Config) => {
     }
 
     spinner.text = `found ${channelName} channel`;
-    const localEnv = parseEnv();
+
+    const envFile = process.env.ENV_FILE || undefined
+    console.log("envFile", envFile)
+    const localEnv = parseEnv(envFile);
     const latestFileFromBot = await bot.latestFile(channel);
 
     if (latestFileFromBot && latestFileFromBot.url_private) {

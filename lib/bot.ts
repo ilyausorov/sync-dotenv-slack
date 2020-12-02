@@ -50,13 +50,10 @@ class SlackBot {
       count: 100,
       token: this.userToken
     });
-    console.log("filename", filename)
     const listWithMatchingFileName = files.length && files.filter(i => i.name === filename)
-    console.log("listWithMatchingFileName", listWithMatchingFileName.length)
     const lastElement = listWithMatchingFileName.length && listWithMatchingFileName.splice(listWithMatchingFileName.length - 1, 1)
-    console.log("lastElement", lastElement)
     await Promise.all(listWithMatchingFileName.map(async (i) => {
-      return deleteFile(i.id)
+      return this.deleteFile(i.id)
     }))
     return lastElement.length ? lastElement[0] : null;
   }

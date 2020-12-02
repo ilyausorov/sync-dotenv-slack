@@ -31,31 +31,22 @@ export const alertChannel = async (options: Config) => {
     const envFile = process.env.ENV_FILE || '.env'
     const localEnv = parseEnv(envFile);
     const latestFileFromBot = await bot.latestFile(channel, envFile);
-    console.log("latestFileFromBot", latestFileFromBot)
-    console.log("latestFileFromBot && latestFileFromBot.url_private", latestFileFromBot && latestFileFromBot.url_private)
     if (latestFileFromBot && latestFileFromBot.url_private) {
       spinner.text = 'comparing envs';
       const fileContents = await bot.fileContents(latestFileFromBot);
-      console.log("fileContents", fileContents)
       const slackEnv = parseEnv(tempWrite.sync(fileContents));
-      console.log("slackEnv", slackEnv)
       const variables = keys(localEnv).every(key =>
         slackEnv.hasOwnProperty(key)
       );
-      console.log("variables", variables)
       const keysInSync =
         variables && keys(localEnv).length === keys(slackEnv).length;
-      console.log("keysInSync", keysInSync)
 
       const valuesInSync = valuesSyncCheck(localEnv, slackEnv, patterns);
-      console.log("valuesInSync", valuesInSync)
       const inSync = keysInSync && valuesInSync;
-
-      console.log("inSync", inSync)
-
       if (!inSync) {
         spinner.text = 'env not in sync';
         spinner.text = 'synchronizing env with slack channel';
+        await bot.deleteFile(latestFileFromBot.id)
         await bot.upload(getEnvContents(localEnv, patterns), channel, envFile);
         spinner.succeed('sync successful 🎉');
       } else spinner.info('env in sync');
